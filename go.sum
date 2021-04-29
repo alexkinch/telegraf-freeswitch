@@ -1,3 +1,5 @@
+github.com/kelseyhightower/envconfig v1.4.0 h1:Im6hONhd3pLkfDFsbRgu68RDNkGF1r3dvMUtDTo2cv8=
+github.com/kelseyhightower/envconfig v1.4.0/go.mod h1:cccZRl6mQpaq41TPp5QxidR+Sa3axMbJDNb//FQX6Gg=
 github.com/rif/go-eventsocket v0.0.0-20181204161426-0bd7c610b4cf h1:ihTA5aXefccAjbJL4ubb2cuMJfs0Ozl9G2QLVRWKn/Y=
 github.com/rif/go-eventsocket v0.0.0-20181204161426-0bd7c610b4cf/go.mod h1:YWKTJ1J0FnkCp0sNimXFzwm4I/D+siJkYfzSkAJurrw=
 github.com/rif/go-eventsocket v0.0.0-20200707124454-0cdee3fe2d8e h1:1QL5wcgMPYPUB9W1EMFlEEXBCl4hGpyUvcPUGy6paqM=

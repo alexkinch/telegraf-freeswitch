@@ -2,39 +2,47 @@ package main
 
 import (
 	"bufio"
-	"flag"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"strings"
 
+	"github.com/kelseyhightower/envconfig"
 	"github.com/rif/telegraf-freeswitch/utils"
 )
 
-var (
-	host          = flag.String("host", "localhost", "freeswitch host address")
-	port          = flag.Int("port", 8021, "freeswitch port")
-	pass          = flag.String("pass", "ClueCon", "freeswitch password")
-	serve         = flag.Bool("serve", false, "run as a server")
-	execd         = flag.Bool("execd", false, "run as an execd server")
-	listenAddress = flag.String("listen_address", "127.0.0.1", "listen on address")
-	listenPort    = flag.Int("listen_port", 9191, "listen on port")
-)
+type Config struct {
+	Host 	string `default:"localhost"`
+	Port	int `default:"8021"`
+	Pass 	string `default:"ClueCon"`
+	Serve 	bool `default:"false"`
+	Execd	bool `default:"false"`
+	ListenAddress string `default:"127.0.0.1"`
+	ListenPort int `default:"9191"`
+}
 
 func handler(w http.ResponseWriter, route string) {
 }
 
 func main() {
-	flag.Parse()
+
 	l := log.New(os.Stderr, "", 0)
-	fetcher, err := utils.NewFetcher(*host, *port, *pass)
+
+	var c Config
+	err := envconfig.Process("telegraf_freeswitch", &c)
+	if err != nil {
+		l.Fatal("error parsing config: ", err)
+	}
+
+	fetcher, err := utils.NewFetcher(c.Host, c.Port, c.Pass)
 	if err != nil {
 		l.Print("error connecting to fs: ", err)
 	}
+
 	defer fetcher.Close()
-	if !*serve {
-		if *execd {
+	if !c.Serve {
+		if c.Execd {
 			reader := bufio.NewReader(os.Stdin)
 			for {
 				text, err := reader.ReadString('\n')
@@ -83,7 +91,7 @@ func main() {
 		}
 	})
 
-	listen := fmt.Sprintf("%s:%d", *listenAddress, *listenPort)
+	listen := fmt.Sprintf("%s:%d", c.ListenAddress, c.ListenPort)
 	fmt.Printf("Listening on %s...", listen)
 	log.Fatal(http.ListenAndServe(listen, nil))
 }
