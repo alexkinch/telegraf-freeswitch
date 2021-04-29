@@ -37,7 +37,7 @@ func main() {
 
 	fetcher, err := utils.NewFetcher(c.Host, c.Port, c.Pass)
 	if err != nil {
-		l.Print("error connecting to fs: ", err)
+		l.Fatal("error connecting to fs: ", err)
 	}
 
 	defer fetcher.Close()
